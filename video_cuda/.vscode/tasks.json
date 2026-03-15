@@ -1,0 +1,35 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-cuda",
+      "type": "shell",
+      "command": "nvcc",
+      "args": [
+        "-std=c++17",
+        "${file}",
+        "-o",
+        "${fileDirname}/${fileBasenameNoExtension}"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [
+        "$gcc"
+      ]
+    },
+    {
+      "label": "build-and-run-cuda-active",
+      "type": "shell",
+      "command": "sh",
+      "args": [
+        "-c",
+        "nvcc -std=c++17 \"${file}\" -o \"${fileDirname}/${fileBasenameNoExtension}\" && \"${fileDirname}/${fileBasenameNoExtension}\""
+      ],
+      "problemMatcher": [
+        "$gcc"
+      ]
+    }
+  ]
+}

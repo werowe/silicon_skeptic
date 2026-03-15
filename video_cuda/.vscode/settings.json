@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "*.cu": "cuda-cpp"
+  },
+  "code-runner.showRunIconInEditorTitleMenu": false,
+  "code-runner.runInTerminal": true,
+  "code-runner.executorMapByFileExtension": {
+    ".cu": "cd \"$dir\" && nvcc -std=c++17 \"$fileName\" -o \"$fileNameWithoutExt\" && ./\"$fileNameWithoutExt\""
+  }
+}
