@@ -1,0 +1,33 @@
+# C/C++ and CUDA build outputs
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+*.exp
+*.pdb
+*.ilk
+*.ptx
+*.cubin
+
+# Build directories
+build/
+bin/
+lib/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+compile_commands.json
+
+# Logs and temp files
+*.log
+*.tmp
+*.temp
+
+# IDE and OS noise
+.DS_Store
+Thumbs.db
