@@ -14,6 +14,19 @@
 *.ptx
 *.cubin
 
+# Compiled binaries (no extension)
+cuda_projects/cpu
+cuda_projects/cpu_bin
+cuda_projects/one_dimension
+cuda_projects/one_dimension_bin
+cuda_projects/two_dimensional
+cuda_projects/two_dimensional_bin
+cuda_projects/cuda_blas_bin
+cuda_projects/cuda_blas_1_base_indexing
+video_cuda/matmul
+video_cuda/matmul_bin
+video_cuda/matmul_no_comments_bin
+
 # Build directories
 build/
 bin/
