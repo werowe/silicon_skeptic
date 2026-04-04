@@ -2,6 +2,15 @@
 #include <cstdlib>
 #include <cuda_runtime.h>
 
+/*
+For
+(4800×192)(192×256)=4800×256
+use:
+
+M = 4800
+K = 192
+N = 256
+
 #define TILE 16
 
 #define CHECK_CUDA(call)                                                      \
