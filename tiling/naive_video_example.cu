@@ -55,21 +55,30 @@ int main()
     // Grid covers C (M x N)
     dim3 grid((N + 15) / 16, (M + 15) / 16);
 
+    // Warm-up run
+    matmul_naive<<<grid, block>>>(d_A, d_B, d_C, M, N, K);
+    cudaDeviceSynchronize();
+
     // Timing
     cudaEvent_t start, stop;
     cudaEventCreate(&start);
     cudaEventCreate(&stop);
 
+    int runs = 20;
+
     cudaEventRecord(start);
-    matmul_naive<<<grid, block>>>(d_A, d_B, d_C, M, N, K);
+    for (int i = 0; i < runs; i++) {
+        matmul_naive<<<grid, block>>>(d_A, d_B, d_C, M, N, K);
+    }
     cudaEventRecord(stop);
 
     cudaEventSynchronize(stop);
+    cudaGetLastError();
 
     float ms;
     cudaEventElapsedTime(&ms, start, stop);
 
-    printf("Naive: %f ms\n", ms);
+    printf("Naive avg over %d runs: %f ms\n", runs, ms / runs);
 
     // Copy result back
     cudaMemcpy(C, d_C, sizeC, cudaMemcpyDeviceToHost);
@@ -82,6 +91,8 @@ int main()
     cudaFree(d_A);
     cudaFree(d_B);
     cudaFree(d_C);
+    cudaEventDestroy(start);
+    cudaEventDestroy(stop);
     free(A);
     free(B);
     free(C);
