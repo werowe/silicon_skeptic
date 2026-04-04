@@ -10,6 +10,7 @@ use:
 M = 4800
 K = 192
 N = 256
+*/
 
 #define TILE 16
 
@@ -46,8 +47,6 @@ __global__ void matmul_naive(const float* A, const float* B, float* C,
 
 int main()
 {
-    // Problem size:
-    // (4800 x 192) * (192 x 256) = (4800 x 256)
     int M = 4800;
     int K = 192;
     int N = 256;
@@ -56,7 +55,6 @@ int main()
     size_t bytesB = K * N * sizeof(float);
     size_t bytesC = M * N * sizeof(float);
 
-    // Host memory
     float* h_A = (float*)malloc(bytesA);
     float* h_B = (float*)malloc(bytesB);
     float* h_C = (float*)malloc(bytesC);
@@ -66,21 +64,18 @@ int main()
         return 1;
     }
 
-    // Generate sample data for A (M x K)
     for (int r = 0; r < M; r++) {
         for (int c = 0; c < K; c++) {
             h_A[r * K + c] = ((r + c) % 10) * 0.1f;
         }
     }
 
-    // Generate sample data for B (K x N)
     for (int r = 0; r < K; r++) {
         for (int c = 0; c < N; c++) {
             h_B[r * N + c] = ((r + c) % 7) * 0.2f;
         }
     }
 
-    // Device memory
     float *d_A, *d_B, *d_C;
     CHECK_CUDA(cudaMalloc((void**)&d_A, bytesA));
     CHECK_CUDA(cudaMalloc((void**)&d_B, bytesB));
@@ -89,20 +84,21 @@ int main()
     CHECK_CUDA(cudaMemcpy(d_A, h_A, bytesA, cudaMemcpyHostToDevice));
     CHECK_CUDA(cudaMemcpy(d_B, h_B, bytesB, cudaMemcpyHostToDevice));
 
-    // 16x16 thread block
     dim3 block(TILE, TILE);
-
-    // Grid sized for C which is M x N
     dim3 grid((N + TILE - 1) / TILE,
               (M + TILE - 1) / TILE);
+
+    // Warm-up
+    matmul_naive<<<grid, block>>>(d_A, d_B, d_C, M, N, K);
+    CHECK_CUDA(cudaDeviceSynchronize());
 
     cudaEvent_t start, stop;
     CHECK_CUDA(cudaEventCreate(&start));
     CHECK_CUDA(cudaEventCreate(&stop));
 
-    cudaEventRecord(start);
+    CHECK_CUDA(cudaEventRecord(start));
     matmul_naive<<<grid, block>>>(d_A, d_B, d_C, M, N, K);
-    cudaEventRecord(stop);
+    CHECK_CUDA(cudaEventRecord(stop));
 
     CHECK_CUDA(cudaEventSynchronize(stop));
     CHECK_CUDA(cudaGetLastError());
@@ -114,7 +110,6 @@ int main()
 
     CHECK_CUDA(cudaMemcpy(h_C, d_C, bytesC, cudaMemcpyDeviceToHost));
 
-    // Print a few values so you can verify something happened
     printf("C[0,0]   = %f\n", h_C[0 * N + 0]);
     printf("C[0,1]   = %f\n", h_C[0 * N + 1]);
     printf("C[10,20] = %f\n", h_C[10 * N + 20]);
