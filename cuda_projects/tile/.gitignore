@@ -1,0 +1,19 @@
+# CUDA build artifacts
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+
+# Generated binaries
+naive-metric-test
+tiled-metric-test
+tiled_verus_naive
+
+# Editor/IDE files
+.vscode/
+.vs/
+*.swp
+*.swo
+*~
