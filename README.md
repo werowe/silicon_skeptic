@@ -6,7 +6,7 @@ Below are the links for the videos and the code
 - [One Dimension Example](https://github.com/werowe/silicon_skeptic/blob/main/cuda_projects/one_dimension.cu)
  [Two Dimension Example](https://github.com/werowe/silicon_skeptic/blob/main/cuda_projects/two_dimensional.cu)
 
-* Tiling Video (in progress)
+* [Tiling Video](https://www.youtube.com/watch?v=rYM66WlFvSU)
 - [Tiling Study](https://github.com/werowe/silicon_skeptic/tree/main/cuda_projects/tile)
 
   
